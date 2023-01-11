@@ -1,8 +1,19 @@
-# Controle_Drone_Python
-# eventualmente vou colocar o que precisa instalar pra fazer funcionar
-python3 -m pip install dronekit
-python3 -m pip install dronekit-sitl
-python3 -m pip install pyserial
+<h1>Controle_Drone_Python</h1>
 
-(talvez precise desse aqui também)
-python3 -m pip install serial
+<h2>Instação de Bibliotecas</h2>
+<ul>
+  <li>python3 -m pip install dronekit</li>
+  <li>python3 -m pip install dronekit-sitl</li>
+  <li>python3 -m pip install pyserial</li>
+  <li>python3 -m pip install serial</li>
+</ul>
+
+<h2>Controle</h2>
+<ul>
+  <li> ↑ : Movimenta drone para frente </li>
+  <li> ↓ : Movimenta drone para trás </li>
+  <li> → : Movimenta drone para direita </li>
+  <li> ← : Movimenta drone para esquerda </li>
+  <li> + : Aumenta a velocidade do drone </li>
+  <li> - : Diminiu a velocidade do drone </li>
+</ul>
