@@ -1,6 +1,6 @@
 <h1>Controle_Drone_Python</h1>
 
-<h2>Instação de Bibliotecas</h2>
+<h2>Instalação de Bibliotecas</h2>
 <ul>
   <li>python3 -m pip install dronekit</li>
   <li>python3 -m pip install dronekit-sitl</li>
