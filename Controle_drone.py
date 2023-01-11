@@ -11,6 +11,7 @@ import time
 import tkinter as tk
 import pymavlink
 import lib_controle_drone as control
+import queue
 
 
 ###### CÓDIGO MAIN #####
@@ -24,27 +25,43 @@ print ("Start simulator (SITL)")
 
 # Connect to the Vehicle.
 print("Connecting to vehicle on: %s" % (connection_string,))
-#vehicle = connect(connection_string, baud=11520, wait_ready=True)
-vehicle = connect("com3", baud=11520, wait_ready=True)
+vehicle = connect(connection_string, baud=11520, wait_ready=True)
+#vehicle = connect("com3", baud=11520, wait_ready=True)
 gnd_speed = 1
+fila_comandos = queue.Queue(maxsize=10) #estrutura de fila garante que o drone não vai seguir uma quantidade de comandos imensa que pode leva-lo a uma situação perigosa
+vehicle.initialize
 
 time.sleep(10)
 
 def key(evento):
     global gnd_speed
+    global fila_comandos
+    
     print(evento.keysym)
     if evento.keysym == "Up":
-        control.set_velocity_body(vehicle, gnd_speed, 0, 0)
-        time.sleep(0.5)
+        if  fila_comandos.full():
+            pass
+        else:
+            print("ENQUEUE UP")
+            fila_comandos.put("up")
+
     elif evento.keysym == "Down":
-        control.set_velocity_body(vehicle, -gnd_speed, 0, 0)
-        time.sleep(0.5)
+        if fila_comandos.full():
+            pass
+        else:
+            fila_comandos.put("down")
+
     elif evento.keysym == "Right":
-        control.set_velocity_body(vehicle, 0, gnd_speed, 0)
-        time.sleep(0.5)
+        if fila_comandos.full():
+            pass
+        else:
+            fila_comandos.put("right")
     elif evento.keysym == "Left":
-        control.set_velocity_body(vehicle, 0, -gnd_speed, 0)
-        time.sleep(0.5)
+        if fila_comandos.full():
+            pass
+        else:
+            fila_comandos.put("left")
+
     elif evento.keysym == "plus": #Controle de velocidade no + do keypad
         if gnd_speed >= 1 and gnd_speed < 12:
             gnd_speed +=1
@@ -52,6 +69,7 @@ def key(evento):
             gnd_speed += 0.1
         print(str(gnd_speed))
         time.sleep(1)
+
     elif evento.keysym == "minus": #Controle de velocidade no - do keypad
         if gnd_speed > 1 :
             gnd_speed -=1
@@ -59,6 +77,21 @@ def key(evento):
             gnd_speed -= 0.1
         print(str(gnd_speed))
         time.sleep(1)
+
+    elif evento.keysym == "e":
+        print("TESTE e")
+        if fila_comandos.full():
+            pass
+        else:
+            fila_comandos.put("e")
+
+    elif evento.keysym == "q":
+        print("TESTE q")
+        if fila_comandos.full():
+            pass
+        else:
+            fila_comandos.put("q")
+
     else:
         pass
 
@@ -66,11 +99,37 @@ def key(evento):
 root = tk.Tk()
 
 
+#this creates a new label to the GUI
+
 control.arm_and_takeoff(vehicle, 10)
-while vehicle.location.global_relative_frame.alt < 5:
-    pass
-root.bind_all("<Key>", key)
-root.mainloop()
+while True:
+    root.bind_all("<Key>", key)
+    if not(fila_comandos.empty()):
+        print("TESTE2")
+        command = fila_comandos.get()
+        if command == "up":
+            control.set_velocity_body(vehicle, gnd_speed, 0, 0)
+            time.sleep(0.5)
+        elif command == "down":
+            control.set_velocity_body(vehicle, -gnd_speed, 0, 0)
+            time.sleep(0.5)
+        elif command == "right":
+            control.set_velocity_body(vehicle, 0, gnd_speed, 0)
+            time.sleep(0.5)
+        elif command == "left":
+            control.set_velocity_body(vehicle, 0, -gnd_speed, 0)
+            time.sleep(0.5)
+        elif command == 'e':
+            control.rotate(vehicle,0,0,10) #(pitch, roll, yaw)
+            time.sleep(0.5)
+        elif command == 'q':
+            control.rotate(vehicle,0,0,-10) #(pitch, roll, yaw)
+            time.sleep(0.5)
+
+    root.update_idletasks()
+    root.update()
+
+
 
 
 

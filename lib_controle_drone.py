@@ -12,14 +12,19 @@ def arm_and_takeoff(vehicle, altitude):
     
     time.sleep(5)
     print("armando motores")
-    vehicle.mode = VehicleMode("GUIDED")
     vehicle.armed = True
-
-    while not vehicle.armed: time.sleep(1)
+    print(vehicle.mode.name)
+    vehicle.mode = VehicleMode('GUIDED')
+    time.sleep(1)
+    while(vehicle.mode.name != "GUIDED"):
+        print(vehicle.mode.name)
+        vehicle.mode = VehicleMode('GUIDED')
+        
+    vehicle.armed = True
 
     print("levantando voo")
-    vehicle.mode = VehicleMode("GUIDED")
-    vehicle.armed = True
+    #vehicle.mode = VehicleMode("GUIDED")
+    #vehicle.armed = True
     vehicle.simple_takeoff(altitude)
 
     while True:
@@ -42,6 +47,37 @@ def set_velocity_body(vehicle, vx , vy , vz):
             vx, vy, vz,     #-- VELOCITY
             0, 0, 0,        #-- ACCELERATIONS
             0, 0)
+    vehicle.send_mavlink(msg)
+    vehicle.flush()
+
+
+#por enquanto essa bosta definitivamente não funciona
+def rotate(vehicle, pitch, roll, yaw): #retirado de dronekit __init__.py TALVEZ NÃO FUNCIONA. TA BIZARRO
+
+    if yaw>0:
+        # create the CONDITION_YAW command using command_long_encode()
+        msg = vehicle.message_factory.command_long_encode(
+            0, 0,    # target system, target component
+            pymavlink.mavutil.mavlink.MAV_CMD_CONDITION_YAW, #command
+            0, #confirmation
+            yaw,    # param 1, yaw in degrees
+            0.1,          # param 2, yaw speed deg/s
+            1,          # param 3, direction -1 ccw, 1 cw
+            1, # param 4, relative offset 1, absolute angle 0
+            0, 0, 0)    # param 5 ~ 7 not used
+        # send command to vehicle
+    else:
+        msg = vehicle.message_factory.command_long_encode(
+            0, 0,    # target system, target component
+            pymavlink.mavutil.mavlink.MAV_CMD_CONDITION_YAW, #command
+            0, #confirmation
+            abs(yaw),    # param 1, yaw in degrees
+            0.1,          # param 2, yaw speed deg/s
+            -1,          # param 3, direction -1 ccw, 1 cw
+            1, # param 4, relative offset 1, absolute angle 0
+            0, 0, 0)    # param 5 ~ 7 not used
+        # send command to vehicle
+
     vehicle.send_mavlink(msg)
     vehicle.flush()
 
