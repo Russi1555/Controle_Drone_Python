@@ -84,6 +84,7 @@ def key(evento):
             pass
         else:
             fila_comandos.put("e")
+        time.sleep(1)
 
     elif evento.keysym == "q":
         print("TESTE q")
@@ -91,6 +92,21 @@ def key(evento):
             pass
         else:
             fila_comandos.put("q")
+        time.sleep(1)
+
+    elif evento.keysym == 'bracketleft':
+        if fila_comandos.full():
+            pass
+        else:
+            fila_comandos.put("[")
+        time.sleep(1)
+    
+    elif evento.keysym == 'bracketright':
+        if fila_comandos.full():
+            pass
+        else:
+            fila_comandos.put("]")
+        time.sleep(1)
 
     else:
         pass
@@ -101,7 +117,7 @@ root = tk.Tk()
 
 #this creates a new label to the GUI
 
-control.arm_and_takeoff(vehicle, 10)
+control.arm_and_takeoff(vehicle, 3)
 while True:
     root.bind_all("<Key>", key)
     if not(fila_comandos.empty()):
@@ -125,6 +141,10 @@ while True:
         elif command == 'q':
             control.rotate(vehicle,0,0,-10) #(pitch, roll, yaw)
             time.sleep(0.5)
+        elif command == '[':
+            control.set_velocity_body(vehicle, 0, 0, -0.5)
+        elif command == ']':
+            control.set_velocity_body(vehicle, 0, 0, 0.5)
 
     root.update_idletasks()
     root.update()

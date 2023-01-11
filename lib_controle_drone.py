@@ -15,12 +15,14 @@ def arm_and_takeoff(vehicle, altitude):
     vehicle.armed = True
     print(vehicle.mode.name)
     vehicle.mode = VehicleMode('GUIDED')
-    time.sleep(1)
+    
     while(vehicle.mode.name != "GUIDED"):
         print(vehicle.mode.name)
         vehicle.mode = VehicleMode('GUIDED')
         
+    time.sleep(1)  
     vehicle.armed = True
+    time.sleep(1)
 
     print("levantando voo")
     #vehicle.mode = VehicleMode("GUIDED")
