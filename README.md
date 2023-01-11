@@ -24,4 +24,6 @@
   <li> ← : Movimenta drone para esquerda </li>
   <li> + : Aumenta a velocidade do drone </li>
   <li> - : Diminiu a velocidade do drone </li>
+  <li> e : Rotaciona o drone 10° sentido horário </li>
+  <li> q : Rotaciona o drone 10° sentido anti-horário </li>
 </ul>
