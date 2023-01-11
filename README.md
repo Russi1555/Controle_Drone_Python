@@ -26,4 +26,6 @@
   <li> - : Diminiu a velocidade do drone </li>
   <li> e : Rotaciona o drone 10° sentido horário </li>
   <li> q : Rotaciona o drone 10° sentido anti-horário </li>
+  <li> [ : Eleva altitude em aproximadamente 1 metro </li>
+  <li> ] : Reduz altitude em aproximadamente 1 metro </li>
 </ul>
