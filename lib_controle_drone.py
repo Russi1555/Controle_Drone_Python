@@ -1,3 +1,8 @@
+#***Necessário pra evitar dor de cabeça relacionada a versão de python***
+import sys
+if sys.version_info.major == 3 and sys.version_info.minor >= 10:
+    import collections
+    setattr(collections, "MutableMapping", collections.abc.MutableMapping)
 from dronekit import connect, VehicleMode
 import dronekit_sitl
 import time
@@ -32,7 +37,7 @@ def arm_and_takeoff(vehicle, altitude):
     while True:
         v_alt = vehicle.location.global_relative_frame.alt
         print(">>> Altitude atual :  " + str(v_alt))
-        if v_alt >= altitude - 1:
+        if v_alt >= altitude - 1: 
             print("Altitude desejada atingida")
             break
         time.sleep(1)
