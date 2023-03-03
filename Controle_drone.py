@@ -22,10 +22,18 @@ from multiprocessing import Process
 import subprocess
 
 
+QGC_stdout = ""
+
 def processo_QGC():
-    global QGC_OUTPUT
-    QGC_OUTPUT = subprocess.run(r"C:\Users\PECCE\Desktop\qgroundcustom\build-qgroundcontrol-Desktop_Qt_5_15_2_MSVC2019_64bit-Debug\staging\QGroundControl.exe").stdout
-    print("EPICO:   ",str(QGC_OUTPUT))
+    global QGC_stdout 
+    QGC_stdout = subprocess.Popen(r"C:\Users\PECCE\Desktop\qgroundcustom\build-qgroundcontrol-Desktop_Qt_5_15_2_MSVC2019_64bit-Debug\staging\QGroundControl.exe",shell = True, stdout=subprocess.PIPE, stderr = subprocess.STDOUT )
+    while True:
+       line = str(QGC_stdout.stdout.readline()).replace("b","").replace("'","")
+       print(line)
+       #OK. Isso aqui funciona. Da pra fazer um botão no QGroundControl que console.log("ABRA CONTROLE MANUAL") e liga o modo guiado do python
+       if "TESTE" in line:
+           print("AAAAAAAAAAAAAAAAAAAA\n\n\n\n\n")
+           quit
 
 ###### CÓDIGO MAIN #####
 if __name__ == '__main__': 
@@ -162,7 +170,7 @@ if __name__ == '__main__':
             elif command == ']':
                 control.set_velocity_body(vehicle, 0, 0, 0.5)
 
-        print("MUITO FODA O : ", str(QGC_OUTPUT))
+        print("MUITO FODA O : ", str(QGC_stdout.communicate()[0]))
         root.update_idletasks()
         root.update()
 
