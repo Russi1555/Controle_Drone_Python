@@ -10,10 +10,20 @@
 
 <h2>Inicialização com simulador</h2>
 <ol>
-  <li>Abrir Mission Planner</li>
   <li>Executar controle_drone_python.py</li>
-  <li>Conectar Mission Planner com configurações TCP 115200</li>
-  <li>Escreva host ip como 127.0.0.1 e remote port como 5762</li>
+  <li>Aguardar a inicialização do QGroundControl</li>
+  <li>Abrir Application Settings</li>
+  <li>Entrar no menu Comm Links</li>
+  <li>Clicar em "Add"</li>
+  <li>
+      <ul>
+      <li>Name: (Qualquer um)</li>
+      <li>Caixas desmarcadas</li>
+      <li>Type: TCP</li>
+      <li>Server Address: 127.0.0.1</li>
+      <li>Port: 5762</li>
+      </ul> 
+  </li>
 </ol>
 
 <h2>Controle</h2>
