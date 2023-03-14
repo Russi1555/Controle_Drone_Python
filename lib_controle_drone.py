@@ -16,26 +16,35 @@ def arm_and_takeoff(vehicle, altitude):
         time.sleep(1)
     
     time.sleep(5)
-    print("armando motores")
-    vehicle.armed = True
-    print(vehicle.mode.name)
-    vehicle.mode = VehicleMode('GUIDED')
+   # print("armando motores")
+    #vehicle.armed = True
+    #print(vehicle.mode.name)
+    #vehicle.mode = VehicleMode('GUIDED')
     
-    while(vehicle.mode.name != "GUIDED"):
-        vehicle.mode = VehicleMode('GUIDED')
+   # while(vehicle.mode.name != "GUIDED"):
+    #    vehicle.mode = VehicleMode('GUIDED')
         
-    time.sleep(1)  
-    vehicle.armed = True
-    time.sleep(1)
+    #time.sleep(1)  
+    #vehicle.armed = True
+    #time.sleep(1)
 
-    print("levantando voo")
+    #print("levantando voo")
     #vehicle.mode = VehicleMode("GUIDED")
     #vehicle.armed = True
-    vehicle.simple_takeoff(altitude)
+    
 
     while True:
         v_alt = vehicle.location.global_relative_frame.alt
         print(">>> Altitude atual :  " + str(v_alt))
+        if vehicle.mode.name != "GUIDED":
+            print("alterando para modo de voo guiado")
+            vehicle.mode = VehicleMode("GUIDED")
+        if not(vehicle.armed):
+            print("armando motores")
+            vehicle.armed = True
+        else:
+            print("levantando voo")
+            vehicle.simple_takeoff(altitude)
         if v_alt >= altitude - 1: 
             print("Altitude desejada atingida")
             break

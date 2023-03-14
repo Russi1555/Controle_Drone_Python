@@ -33,7 +33,8 @@ def processo_QGC():
        #OK. Isso aqui funciona. Da pra fazer um botão no QGroundControl que console.log("ABRA CONTROLE MANUAL") e liga o modo guiado do python
        if "TESTE" in line:
            print("AAAAAAAAAAAAAAAAAAAA\n\n\n\n\n")
-           quit
+
+
 
 ###### CÓDIGO MAIN #####
 if __name__ == '__main__': 
@@ -169,8 +170,8 @@ if __name__ == '__main__':
                 control.set_velocity_body(vehicle, 0, 0, -0.5)
             elif command == ']':
                 control.set_velocity_body(vehicle, 0, 0, 0.5)
+            
 
-        print("MUITO FODA O : ", str(QGC_stdout.communicate()[0]))
         root.update_idletasks()
         root.update()
 
@@ -184,4 +185,5 @@ if __name__ == '__main__':
     sitl.stop()
     print("Completed")
     QGC.join()
+    
 
