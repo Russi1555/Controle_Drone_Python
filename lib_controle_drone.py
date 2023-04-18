@@ -16,7 +16,10 @@ def arm_and_takeoff(vehicle, altitude):
         time.sleep(1)
     
     time.sleep(5)
-   # print("armando motores")
+    print("armando motores")
+    vehicle.mode = VehicleMode("LOITER")
+    set_guided_mode(vehicle)
+    print("foi?")
     #vehicle.armed = True
     #print(vehicle.mode.name)
     #vehicle.mode = VehicleMode('GUIDED')
@@ -65,6 +68,7 @@ def set_velocity_body(vehicle, vx , vy , vz):
     vehicle.send_mavlink(msg)
     vehicle.flush()
 
+    
 
 #por enquanto essa bosta definitivamente não funciona
 def rotate(vehicle, pitch, roll, yaw): #retirado de dronekit __init__.py TALVEZ NÃO FUNCIONA. TA BIZARRO
@@ -92,6 +96,17 @@ def rotate(vehicle, pitch, roll, yaw): #retirado de dronekit __init__.py TALVEZ 
             1, # param 4, relative offset 1, absolute angle 0
             0, 0, 0)    # param 5 ~ 7 not used
         # send command to vehicle
+
+    vehicle.send_mavlink(msg)
+    vehicle.flush()
+
+def set_guided_mode(vehicle): # https://github.com/OpenSolo/mavlink-solo/blob/4060b70d7cd0a7ffe66f45fcd041e6f9af308852/message_definitions/v1.0/common.xml#L1692
+    msg = vehicle.message_factory.command_long_encode(
+        0, 0, pymavlink.mavutil.mavlink.MAV_CMD_DO_SET_MODE, 0, 4, 4, 4, 0, 0, 0, 0
+        )
+
+    
+
 
     vehicle.send_mavlink(msg)
     vehicle.flush()

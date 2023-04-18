@@ -3,15 +3,13 @@
 #MANDAR O MISSION PLANNER SE CONECTAR COM A PORTA 5602 (acredito que ele cria uma porta de saida na 5600 e uma de entrada na 5601)
 
 
-
-
 #***Necessário pra evitar dor de cabeça relacionada a versão de python***
 import sys
 if sys.version_info.major == 3 and sys.version_info.minor >= 10:
     import collections
     setattr(collections, "MutableMapping", collections.abc.MutableMapping)
 
-from dronekit import connect, VehicleMode
+from dronekit import connect, VehicleMode, ChannelsOverride
 import dronekit_sitl
 import time
 import tkinter as tk
@@ -20,19 +18,27 @@ import lib_controle_drone as control
 import queue
 from multiprocessing import Process
 import subprocess
+import codecs
+import os
+import os.path
 
 
 QGC_stdout = ""
 
-def processo_QGC():
+def processo_QGC(path):
     global QGC_stdout 
-    QGC_stdout = subprocess.Popen(r"C:\Users\PECCE\Desktop\qgroundcustom\build-qgroundcontrol-Desktop_Qt_5_15_2_MSVC2019_64bit-Debug\staging\QGroundControl.exe",shell = True, stdout=subprocess.PIPE, stderr = subprocess.STDOUT )
+    #path = r'C:\Users\PECCE\Desktop\qgroundcustom\build-qgroundcontrol-Desktop_Qt_5_15_2_MSVC2019_64bit-Debug\staging\QGroundControl.exe'
+    QGC_stdout = subprocess.Popen(path,
+                                  shell = True, 
+                                  stdout=subprocess.PIPE, 
+                                  stderr = subprocess.STDOUT )
     while True:
        line = str(QGC_stdout.stdout.readline()).replace("b","").replace("'","")
        print(line)
-       #OK. Isso aqui funciona. Da pra fazer um botão no QGroundControl que console.log("ABRA CONTROLE MANUAL") e liga o modo guiado do python
-       if "TESTE" in line:
-           print("AAAAAAAAAAAAAAAAAAAA\n\n\n\n\n")
+       #OK. Isso aqui funciona. Da pra fazer um botão no QGroundControl que console.log("ABRA CONTROLE MANUAL") e liga o modo guiado do python por exemplo
+       if "TESTE," in line:
+           info_extraida = line.split(',')
+           print("\n\n" + info_extraida[3] + "\n\n") #dessa forma da pra realizar a conversão binária dos valores do parametro customizado TODO: VER COMO ENVIAR A INFORMAÇÃO CONVERTIDA DE VOLTA
 
 
 
@@ -45,8 +51,19 @@ if __name__ == '__main__':
     print ("Start simulator (SITL)")
     #comando pra conectar com o drone por porta serial
     #connect('COM3', wait_ready=True, baud=57600))
-    QGC = Process(target=processo_QGC)
-    QGC.start()
+    
+    if not(os.path.exists("arquivo_path.txt")):
+        path = input(r"input path: ")
+        arquivo_path = open("arquivo_path.txt",'x+')
+        arquivo_path.write(path)
+        arquivo_path.close()
+    arquivo_path = open("arquivo_path.txt",'r')
+    path = arquivo_path.read()
+    arquivo_path.close()
+    QGC = Process(target=processo_QGC, args=(path,))
+    QGC.start() 
+
+    
 
     # Connect to the Vehicle.
     print("Connecting to vehicle on: %s" % (connection_string,))
