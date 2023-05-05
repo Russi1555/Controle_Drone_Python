@@ -1,5 +1,12 @@
 <h1>Controle_Drone_Python</h1>
 
+<h2>Instalação QGC Custom </h2>
+<ul>
+  <li>Baixar o zip https://drive.google.com/file/d/1F5yoWeu2_574p-d-Swr1pw_0VsTOLuAH/view?usp=sharing</li>
+  <li>Descompactar e clicar no QGroundControl - Atalho</li>
+  <li>Caso o atalho não funcione entre na pasta /build.../staging/ e clique no QGroundControl.exe
+</ul>
+
 <h2>Instalação de Bibliotecas</h2>
 <ul>
   <li>python3 -m pip install dronekit</li>
