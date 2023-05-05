@@ -17,10 +17,7 @@
 
 <h2>Inicialização com simulador</h2>
 <ol>
-  <li>Abrir Mission Planner</li>
-  <li>Executar controle_drone_python.py</li>
-  <li>Conectar Mission Planner com configurações TCP 115200</li>
-  <li>Escreva host ip como 127.0.0.1 e remote port como 5762</li>
+  <li>(A atualizar. Consultar documento macroentrega 4)</li>
 </ol>
 
 <h2>Controle</h2>
