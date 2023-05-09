@@ -2,7 +2,7 @@
 
 <h2>Instalação QGC Custom </h2>
 <ul>
-  <li>Baixar o zip https://drive.google.com/file/d/1F5yoWeu2_574p-d-Swr1pw_0VsTOLuAH/view?usp=sharing</li>
+  <li>Baixar o zip https://drive.google.com/file/d/1TOvKAjkg2bHB2_zwoD5h7SB0ofPua9Gz/view?usp=sharing</li>
   <li>Descompactar e clicar no QGroundControl - Atalho</li>
   <li>Caso o atalho não funcione entre na pasta /build.../staging/ e clique no QGroundControl.exe
 </ul>
