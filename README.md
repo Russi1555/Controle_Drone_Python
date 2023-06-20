@@ -16,7 +16,7 @@
 
 <h2>Inicialização com simulador</h2>
 <ol>
-  <li>(A atualizar. Consultar documento macroentrega 4)</li>
+  <li>(Descrito no relatório da macroentrega 4)</li>
 </ol>
 
 <h2>Controle</h2>
