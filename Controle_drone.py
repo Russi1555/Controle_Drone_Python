@@ -4,6 +4,7 @@
 
 
 #***Necessário pra evitar dor de cabeça relacionada a versão de python***
+from asyncio.windows_events import NULL
 import sys
 if sys.version_info.major == 3 and sys.version_info.minor >= 10:
     import collections
@@ -18,7 +19,6 @@ import lib_controle_drone as control
 import queue
 from multiprocessing import Process
 import subprocess
-import codecs
 import os
 import os.path
 
@@ -34,13 +34,14 @@ def processo_QGC(path):
                                   stderr = subprocess.STDOUT )
     while True:
        line = str(QGC_stdout.stdout.readline()).replace("b","").replace("'","")
-       print(line)
        #OK. Isso aqui funciona. Da pra fazer um botão no QGroundControl que console.log("ABRA CONTROLE MANUAL") e liga o modo guiado do python por exemplo
        if "TESTE," in line:
            info_extraida = line.split(',')
            print("\n\n" + info_extraida[3] + "\n\n") #dessa forma da pra realizar a conversão binária dos valores do parametro customizado TODO: VER COMO ENVIAR A INFORMAÇÃO CONVERTIDA DE VOLTA
-
-
+       if "Quit event false\r\n" in line:
+           print("CABOU")
+           QGC_stdout.kill()
+           break
 
 ###### CÓDIGO MAIN #####
 if __name__ == '__main__': 
@@ -53,7 +54,8 @@ if __name__ == '__main__':
     #connect('COM3', wait_ready=True, baud=57600))
     
     if not(os.path.exists("arquivo_path.txt")):
-        path = input(r"input path: ")
+        print("Input path to QGroundControl.exe: ")
+        path = input(r"")
         arquivo_path = open("arquivo_path.txt",'x+')
         arquivo_path.write(path)
         arquivo_path.close()
@@ -152,9 +154,21 @@ if __name__ == '__main__':
 
         else:
             pass
-
-
+        
+        
     root = tk.Tk()
+    root.geometry("600x400+300+300")
+    lbl= tk.Label(root, text="Instruções", fg='black', font=("Helvetica", 24))
+    lbl2 = tk.Label(root, text=" -> ←↑→↓ : Movimenta o drone", fg='black', font=("Helvetica", 16))
+    lbl3 = tk.Label(root, text=" -> + - : Aumenta/Reduz velocidade", fg='black', font=("Helvetica", 16))
+    lbl4 = tk.Label(root, text=" -> [ ] : Aumenta/Reduz altitude em 1m", fg='black', font=("Helvetica", 16))
+    lbl5 = tk.Label(root, text=" -> e q : Rotaciona drone em +/- 10°", fg='black', font=("Helvetica", 16))
+    lbl.place(x=0, y=0)
+    lbl2.place(x=0, y =48)
+    lbl3.place(x=0, y=78)
+    lbl4.place(x=0, y=108)
+    lbl5.place(x=0, y=138)
+    root.attributes('-topmost',True)
 
 
     #this creates a new label to the GUI
@@ -162,6 +176,8 @@ if __name__ == '__main__':
     control.arm_and_takeoff(vehicle, 3)
     while True:
         root.bind_all("<Key>", key)
+        if not((QGC.is_alive())):
+            quit()
         if not(fila_comandos.empty()):
             print("TESTE2")
             command = fila_comandos.get()

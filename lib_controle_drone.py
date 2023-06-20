@@ -60,7 +60,7 @@ def set_velocity_body(vehicle, vx , vy , vz):
             0,
             0, 0,
             pymavlink.mavutil.mavlink.MAV_FRAME_BODY_NED,
-            0b0000111111000111, #-- BITMASK -> Consider only the velocities #atualmente não tem suporte pra controlar o drone através de aceleração.
+            0b0000111111000111, #-- BITMASK -> #atualmente não tem suporte pra controlar o drone através de aceleração.
             0, 0, 0,        #-- POSITION
             vx, vy, vz,     #-- VELOCITY
             0, 0, 0,        #-- ACCELERATIONS
@@ -70,7 +70,6 @@ def set_velocity_body(vehicle, vx , vy , vz):
 
     
 
-#por enquanto essa bosta definitivamente não funciona
 def rotate(vehicle, pitch, roll, yaw): #retirado de dronekit __init__.py TALVEZ NÃO FUNCIONA. TA BIZARRO
 
     if yaw>0:
